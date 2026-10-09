@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - Kelajak Sun'iy Intellekt Platformasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            glow: '#a855f7',
+                            cyan: '#06b6d4'
+                        },
+                        darkbg: '#090d16',
+                        cardbg: '#111827'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        glow: {
+                            '0%': { opacity: '0.4', filter: 'blur(20px)' },
+                            '100%': { opacity: '0.8', filter: 'blur(35px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090d16;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #a855f7 0%, #06b6d4 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 border-b border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-glow to-brand-cyan flex items-center justify-center shadow-lg shadow-brand-glow/30">
+                        <i class="fa-solid font-bold fa-brain text-xl text-white"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight">Nexus<span class="gradient-text">.AI</span></span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-gray-300 hover:text-white font-medium transition duration-150">Bosh sahifa</a>
+                    <a href="#demo" class="text-gray-300 hover:text-white font-medium transition duration-150">AI Demo</a>
+                    <a href="#features" class="text-gray-300 hover:text-white font-medium transition duration-150">Imkoniyatlar</a>
+                    <a href="#generator" class="text-gray-300 hover:text-white font-medium transition duration-150">Prompt Generator</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white font-medium transition duration-150">Narxlar</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#demo" class="px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-brand-500 to-brand-glow hover:from-brand-600 hover:to-brand-glow/80 text-white shadow-lg shadow-brand-glow/25 transition-all transform hover:scale-105">
+                        Sinab ko'rish <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-b border-gray-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#hero" class="block text-gray-300 hover:text-white py-2 font-medium">Bosh sahifa</a>
+            <a href="#demo" class="block text-gray-300 hover:text-white py-2 font-medium">AI Demo</a>
+            <a href="#features" class="block text-gray-300 hover:text-white py-2 font-medium">Imkoniyatlar</a>
+            <a href="#generator" class="block text-gray-300 hover:text-white py-2 font-medium">Prompt Generator</a>
+            <a href="#pricing" class="block text-gray-300 hover:text-white py-2 font-medium">Narxlar</a>
+            <a href="#demo" class="inline-block w-full text-center px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-brand-500 to-brand-glow text-white shadow-lg">Sinab ko'rish</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <!-- Background Glow Orbs -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-glow/20 rounded-full animate-glow pointer-events-none"></div>
+        <div class="absolute top-1/3 left-1/3 w-80 h-80 bg-brand-cyan/20 rounded-full animate-glow pointer-events-none delay-1000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border border-purple-500/30 mb-8 animate-bounce">
+                <span class="flex h-2 w-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-purple-300">Nexus 3.0 Yangi Avlod AI</span>
+            </div>
+
+            <!-- Heading -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
+                Biznes va Ijodingizni <br class="hidden sm:inline">
+                <span class="gradient-text" id="typewriter-text">AI Kuch bilan Boyiting</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 font-light mb-10 leading-relaxed">
+                Nexus AI bilan kontent yarating, kod yozing va ma'lumotlarni tahlil qiling. Barchasi bir joyda — tez, aniq va xavfsiz.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+                <a href="#demo" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold bg-gradient-to-r from-brand-500 via-brand-glow to-brand-cyan hover:opacity-95 text-white shadow-xl shadow-brand-glow/25 transition duration-300 transform hover:-translate-y-0.5">
+                    Bepul Ishlatib Ko'rish <i class="fa-solid fa-sparkles ml-2"></i>
+                </a>
+                <a href="#features" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold glass hover:bg-white/10 text-gray-200 transition duration-300 border border-gray-700">
+                    Batafsil Ma'lumot <i class="fa-solid fa-[#10B981] fa-play ml-2 text-xs"></i>
+                </a>
+            </div>
+
+            <!-- Stats/Trust -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto pt-8 border-t border-gray-800/60 text-center">
+                <div>
+                    <h3 class="text-3xl font-bold text-white">99.8%</h3>
+                    <p class="text-sm text-gray-400 mt-1">Aniqlik darajasi</p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-white">100K+</h3>
+                    <p class="text-sm text-gray-400 mt-1">Aktiv foydalanuvchilar</p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-white">10x</h3>
+                    <p class="text-sm text-gray-400 mt-1">Ish samaradorligi</p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-white">24/7</h3>
+                    <p class="text-sm text-gray-400 mt-1">Avtomatik yordam</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Interactive Playground / Demo Section -->
+    <section id="demo" class="py-20 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Jonli AI Chat va Asistent Demo</h2>
+                <p class="text-gray-400">Pastda ko'rsatilgan tayyor savollardan birini tanlang yoki o'zingiz sinab ko'ring.</p>
+            </div>
+
+            <!-- Chat Widget Window -->
+            <div class="glass rounded-2xl shadow-2xl border border-purple-500/20 overflow-hidden">
+                <!-- Window Top Header -->
+                <div class="px-6 py-4 bg-gray-900/80 border-b border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        <span class="text-xs text-gray-400 font-mono ml-4">nexus-ai-engine-v3.0.1</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs text-brand-cyan">
+                        <i class="fa-solid fa-signal"></i> <span>Tizim tayyor</span>
+                    </div>
+                </div>
+
+                <!-- Chat Body -->
+                <div id="chat-box" class="p-6 h-80 overflow-y-auto space-y-4 font-sans text-sm sm:text-base">
+                    <!-- Bot initial message -->
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-glow/20 border border-brand-glow/40 flex items-center justify-center text-brand-glow flex-shrink-0">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="glass-card p-4 rounded-2xl max-w-xl text-gray-200">
+                            Salom! Men Nexus AI asistentiman. Sizga matnlar yaratishda, kod yozishda va g'oyalar oylashda yordam bera olaman. Nima haqida gaplashamiz?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Buttons -->
+                <div class="px-6 py-2 bg-gray-900/40 border-t border-gray-800/50 flex flex-wrap gap-2 text-xs">
+                    <span class="text-gray-400 py-1">Tezkor savollar:</span>
+                    <button onclick="sendQuickPrompt('SMM uchun ajoyib post yozib ber')" class="bg-gray-800 hover:bg-brand-500/20 hover:text-brand-glow border border-gray-700 px-3 py-1 rounded-full text-gray-300 transition">📱 SMM Post</button>
+                    <button onclick="sendQuickPrompt('Python dasturlash tili haqida qisqacha ma\'lumot ber')" class="bg-gray-800 hover:bg-brand-500/20 hover:text-brand-glow border border-gray-700 px-3 py-1 rounded-full text-gray-300 transition">💻 Python Haqida</button>
+                    <button onclick="sendQuickPrompt('Startup yaratish uchun 3 ta zo\'r g\'oya ber')" class="bg-gray-800 hover:bg-brand-500/20 hover:text-brand-glow border border-gray-700 px-3 py-1 rounded-full text-gray-300 transition">💡 Startup G'oya</button>
+                </div>
+
+                <!-- Input Box -->
+                <div class="p-4 bg-gray-900/90 border-t border-gray-800 flex items-center space-x-3">
+                    <input type="text" id="user-input" placeholder="Savolingizni yoki buyruqni yozing..." class="flex-grow bg-gray-800/80 border border-gray-700 focus:border-brand-glow focus:outline-none text-white px-4 py-3 rounded-xl text-sm transition">
+                    <button onclick="sendMessage()" class="bg-gradient-to-r from-brand-500 to-brand-glow hover:opacity-90 text-white px-5 py-3 rounded-xl text-sm font-semibold transition flex items-center">
+                        <span>Yuborish</span>
+                        <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 relative bg-gray-950/40 border-y border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase font-bold tracking-widest text-brand-cyan mb-2">Imkoniyatlar</h2>
+                <h3 class="text-3xl sm:text-5xl font-extrabold">Nexus AI Nimalarga Qodir?</h3>
+                <p class="text-gray-400 mt-4">Bizning platformamiz barcha asosiy AI texnologiyalarini bitta qulay muhitga jamlaydi.</p>
+            </div>
+
+            <!-- Feature Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Aqlli Matn Yozuvchi</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Maqolalar, SMM postlar, elektron xatlar va reklama matnlarini bir necha soniya ichida o'zbek va boshqa tillarda yarating.
+                    </p>
+                    <a href="#demo" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Sinab ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Kod Generatsiyasi va Tahlil</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Python, JavaScript, HTML/CSS va boshqa tillarda xatolarsiz kod yozing, refaktor qiling hamda xatolarni avtomatik toping.
+                    </p>
+                    <a href="#demo" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Sinab ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Rasm uchun Prompt Generatsiyasi</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Midjourney va DALL-E uchun eng samarali, yuqori sifatli vizual g'oyalar va prompt tavsiyalarini oling.
+                    </p>
+                    <a href="#generator" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Sinab ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Ma'lumotlar Analitikasi</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Katta xajmdagi ma'lumotlar va hujjatlarni (PDF, Excel) tahlil qiling, xulosalar va hisobotlar oling.
+                    </p>
+                    <a href="#demo" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Sinab ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Ko'p Tilli Tarjimon</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        O'zbek tilidagi kontekstni mukammal tushunadigan va 50+ tillarga professional tarzda tarjima qiluvchi modul.
+                    </p>
+                    <a href="#demo" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Sinab ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Tezkor API Integratsiyasi</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Nexus AI imkoniyatlarini o'z ilovangiz yoki veb-saytingizga osongina ulash uchun qulay va tezkor API.
+                    </p>
+                    <a href="#demo" class="text-xs font-semibold text-brand-cyan hover:underline inline-flex items-center">Hujjatlarni ko'rish <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Tool: Prompt Generator -->
+    <section id="generator" class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass p-8 sm:p-12 rounded-3xl border border-brand-glow/20 relative shadow-2xl">
+                <div class="text-center mb-8">
+                    <span class="px-3 py-1 bg-brand-glow/20 text-brand-glow text-xs font-bold rounded-full uppercase">Interaktiv Asbob</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold mt-3">AI Prompt Generator</h2>
+                    <p class="text-gray-400 text-sm mt-2">Sohangizni tanlang va mukammal AI so'rovini (prompt) yarating</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Options Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-2">Soha / Yo'nalish</label>
+                            <select id="prompt-category" class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl p-3 text-sm focus:border-brand-glow focus:outline-none">
+                                <option value="marketing">Marketing & SMM</option>
+                                <option value="coding">Dasturlash</option>
+                                <option value="art">Dizayn / Midjourney</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-2">Matn Tonu</label>
+                            <select id="prompt-tone" class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl p-3 text-sm focus:border-brand-glow focus:outline-none">
+                                <option value="professional">Professional</option>
+                                <option value="creative">Kreativ & Qiziqarli</option>
+                                <option value="technical">Texnik & Aniq</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-2">Mavzu / Kalit so'z</label>
+                            <input type="text" id="prompt-topic" placeholder="Masalan: Qahvaxona" class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl p-3 text-sm focus:border-brand-glow focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button onclick="generatePrompt()" class="w-full py-3.5 bg-gradient-to-r from-brand-glow to-brand-cyan hover:opacity-90 text-white font-bold rounded-xl shadow-lg transition">
+                        Prompt Yaratish <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                    </button>
+
+                    <!-- Result Box -->
+                    <div class="bg-gray-900/90 p-5 rounded-2xl border border-gray-800 relative">
+                        <span class="text-xs font-mono text-gray-500 uppercase tracking-wider block mb-2">Tayyor Prompt:</span>
+                        <p id="generated-prompt-text" class="text-gray-200 text-sm italic">
+                            "Yuqoridagi maydonlarni to'ldiring va 'Prompt Yaratish' tugmasini bosing..."
+                        </p>
+                        <button onclick="copyPrompt()" class="absolute top-4 right-4 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg border border-gray-700 transition flex items-center space-x-1">
+                            <i class="fa-regular fa-copy"></i> <span id="copy-btn-text">Nusxalash</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase font-bold tracking-widest text-brand-cyan mb-2">Tariflar</h2>
+                <h3 class="text-3xl sm:text-5xl font-extrabold">O'zingizga Mos Rejani Tanlang</h3>
+                <p class="text-gray-400 mt-4">Har qanday hajmga mos keluvchi moslashuvchan narxlar</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="glass-card p-8 rounded-3xl border border-gray-800 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Boshlang'ich</h4>
+                        <p class="text-gray-400 text-sm mb-6">Sinab ko'rish uchun bepul reja</p>
+                        <div class="text-4xl font-extrabold mb-6">$0 <span class="text-sm font-normal text-gray-400">/ oylik</span></div>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Kuniga 20 ta AI so'rov</li>
+                            <li class="flex items-center"><li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Asosiy AI modellar</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Standart javob tezligi</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-3 rounded-xl border border-gray-700 hover:bg-white/5 font-semibold text-sm transition">Boshlash</button>
+                </div>
+
+                <!-- Pro Plan (Featured) -->
+                <div class="glass p-8 rounded-3xl border-2 border-brand-glow relative flex flex-col justify-between shadow-2xl scale-105 bg-gray-900/80">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-brand-glow to-brand-cyan text-white text-xs font-bold rounded-full uppercase shadow-md">Eng Ommabop</span>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Pro Asistent</h4>
+                        <p class="text-gray-400 text-sm mb-6">Frilanserlar va mutaxassislar uchun</p>
+                        <div class="text-4xl font-extrabold mb-6">$19 <span class="text-sm font-normal text-gray-400">/ oylik</span></div>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Cheksiz AI so'rovlar</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Nexus 3.0 Ultra modeli</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Kod va Rasm generatori</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Premium qo'llab-quvvatlash</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-glow hover:opacity-90 font-bold text-sm transition shadow-lg shadow-brand-glow/30">Hozir A'zo Bo'lish</button>
+                </div>
+
+                <!-- Business Plan -->
+                <div class="glass-card p-8 rounded-3xl border border-gray-800 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Biznes</h4>
+                        <p class="text-gray-400 text-sm mb-6">Kompaniyalar va jamoalar uchun</p>
+                        <div class="text-4xl font-extrabold mb-6">$49 <span class="text-sm font-normal text-gray-400">/ oylik</span></div>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> 5 gacha jamoa a'zosi</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> API ga to'liq kirish</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Maxsus xavfsizlik va tahlil</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-3 rounded-xl border border-gray-700 hover:bg-white/5 font-semibold text-sm transition">A'zo Bo'lish</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-gray-950 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand info -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-glow to-brand-cyan flex items-center justify-center">
+                            <i class="fa-solid fa-brain text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">Nexus.AI</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Kelajak texnologiyalari va sun'iy intellekt orqali ishingizni tezlashtiring.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div>
+                    <h5 class="text-white font-semibold mb-4 text-sm">Mahsulot</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#features" class="hover:text-white transition">Imkoniyatlar</a></li>
+                        <li><a href="#demo" class="hover:text-white transition">AI Chat</a></li>
+                        <li><a href="#generator" class="hover:text-white transition">Prompt Generator</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition">Tariflar</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div>
+                    <h5 class="text-white font-semibold mb-4 text-sm">Kompaniya</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Biz haqimizda</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Aloqa</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 - Social -->
+                <div>
+                    <h5 class="text-white font-semibold mb-4 text-sm">Ijtimoiy tarmoqlar</h5>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-glow transition">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-glow transition">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-glow transition">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-gray-900 text-center text-xs text-gray-500">
+                &copy; 2026 Nexus AI. Barcha huquqlar himoyalangan.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Chat Widget Interactive Logic
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        // Predefined AI Bot Responses Simulation
+        const aiResponses = {
+            "smm": "🚀 **SMM Post G'oyasi (Qahvaxona uchun):**\n\n'Ertalabki kayfiyatni espresso bilan boshlang! ☕ Bugun bizda maxsus chegirma: Har ikki espresso uchun croissant bepul. Do'stlaringizni belgilang va birga keling! 👇 #QahvaVaqti #Toshkent'",
+            "python": "🐍 **Python haqida:**\nPython — bu o'rganish juda oson bo'lgan, zamonaviy va yuqori darajali dasturlash tili. U AI, Data Science va Web dasturlashda keng qo'llaniladi.",
+            "startup": "💡 **3 ta Startup G'oya:**\n1. O'quvchilar uchun shaxsiy AI repetitor ilovasi.\n2. Restoranlar uchun aqlli menyu va buyurtma platformasi.\n3. Yashil energiya iste'molini tahlil qiluvchi IoT vosita.",
+            "default": "Ajoyib savol! Nexus AI tizimi bu borada sizga eng so'nggi ma'lumotlar va qulay yechimlarni taqdim eta oladi. Yana nimani bilmoqchisiz?"
+        };
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // Render User Message
+            renderMessage(text, 'user');
+            userInput.value = '';
+
+            // Show Typing Indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'flex items-center space-x-2 text-xs text-gray-400 italic';
+            typingDiv.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> <span>Nexus AI o\'ylamoqda...</span>';
+            chatBox.appendChild(typingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Simulate Bot Response Delay
+            setTimeout(() => {
+                document.getElementById('typing-indicator')?.remove();
+                let reply = aiResponses.default;
+                
+                const lower = text.toLowerCase();
+                if (lower.includes('post') || lower.includes('smm')) reply = aiResponses.smm;
+                else if (lower.includes('python') || lower.includes('kod')) reply = aiResponses.python;
+                else if (lower.includes('startup') || lower.includes('g\'oya')) reply = aiResponses.startup;
+
+                renderMessage(reply, 'bot');
+            }, 1200);
+        }
+
+        function sendQuickPrompt(promptText) {
+            userInput.value = promptText;
+            sendMessage();
+        }
+
+        function renderMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-3 ' + (sender === 'user' ? 'justify-end' : '');
+
+            if (sender === 'bot') {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg bg-brand-glow/20 border border-brand-glow/40 flex items-center justify-center text-brand-glow flex-shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl max-w-xl text-gray-200 whitespace-pre-line">${text}</div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-r from-brand-500 to-brand-glow p-4 rounded-2xl max-w-xl text-white shadow-md">${text}</div>
+                    <div class="w-8 h-8 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300 flex-shrink-0">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                `;
+            }
+
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Enter key to send message
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Prompt Generator Logic
+        function generatePrompt() {
+            const category = document.getElementById('prompt-category').value;
+            const tone = document.getElementById('prompt-tone').value;
+            const topic = document.getElementById('prompt-topic').value || 'Mavzu';
+
+            let promptResult = '';
+
+            if (category === 'marketing') {
+                promptResult = `Azoim bilan "${topic}" mavzusida ${tone} uslubda ta'sirchan SMM post va 5 ta mos hashtag yozib ber.`;
+            } else if (category === 'coding') {
+                promptResult = `Menga "${topic}" uchun ${tone} va optimallashtirilgan to'liq kod namunasini sharhlar bilan yozib ber.`;
+            } else {
+                promptResult = `Midjourney v6 uchun prompt: HD photorealistic, "${topic}", ${tone} lighting, 8k resolution, cinematic composition --ar 16:9`;
+            }
+
+            document.getElementById('generated-prompt-text').innerText = promptResult;
+        }
+
+        // Copy Prompt Function
+        function copyPrompt() {
+            const textToCopy = document.getElementById('generated-prompt-text').innerText;
+            if (textToCopy.includes('Yuqoridagi maydonlarni')) return;
+
+            // Safe clipboard fallback
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = textToCopy;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const copyBtnText = document.getElementById('copy-btn-text');
+            copyBtnText.innerText = "Nusxalandi!";
+            setTimeout(() => {
+                copyBtnText.innerText = "Nusxalash";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
